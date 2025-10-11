@@ -1,16 +1,22 @@
-import unittest
-from unittest.mock import Mock, patch
-from src.spotify_client import SpotifyClient
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+import streamlit as st
 
-class TestSpotifyClient(unittest.TestCase):
-    @patch('src.spotify_client.SpotifyClientCredentials')
-    @patch('src.spotify_client.spotipy.Spotify')
-    def test_initialize_client(self, mock_spotify, mock_creds):
-        # Test client initialization
-        client = SpotifyClient()
-        # Add more test cases
+# Test your credentials directly
+client_id = "your_NEW_client_id_here"
+client_secret = "your_NEW_client_secret_here"
+
+try:
+    client_credentials_manager = SpotifyClientCredentials(
+        client_id=client_id, 
+        client_secret=client_secret
+    )
+    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     
-    # Add more test methods for other functions
-
-if __name__ == '__main__':
-    unittest.main()
+    # Test search
+    results = sp.search(q='Blinding Lights', type='track', limit=1)
+    st.success("✅ Spotify connection successful!")
+    st.write(f"Found: {results['tracks']['items'][0]['name']}")
+    
+except Exception as e:
+    st.error(f"❌ Failed: {e}")
