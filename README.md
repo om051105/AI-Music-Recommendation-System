@@ -1,22 +1,18 @@
 # AI Music Recommendation System
 
-A machine learning-powered music recommendation system using Spotify API and Streamlit.
+A smart music recommendation system that suggests songs based on your preferences using AI and machine learning.
 
 ## Features
+- Song-based recommendations
+- Mood-based matching
+- Artist similarity
+- Direct Spotify/YouTube links
+- Chat-style interface
 
-- Song-based recommendations using cosine similarity
-- Mood-based recommendations (happy, sad, energetic, calm, focused)
-- Artist-based recommendations
-- Audio feature analysis
-- Spotify integration with previews
+## Live Demo
+[Add your Streamlit Cloud URL here]
 
-## Setup
-
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Set up Spotify API credentials in `.env` file
-4. Run the app: `streamlit run app.py`
-
-## Configuration
-
-Copy `.env.example` to `.env` and add your Spotify credentials:
+## Local Development
+```bash
+pip install -r requirements.txt
+streamlit run app.py
