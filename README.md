@@ -9,8 +9,6 @@ A smart music recommendation system that suggests songs based on your preference
 - Direct Spotify/YouTube links
 - Chat-style interface
 
-## Live Demo
-[Add your Streamlit Cloud URL here]
 
 ## Local Development
 ```bash
