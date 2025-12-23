@@ -1,0 +1,26 @@
+services:
+  # 1. The Python Brain (Backend)
+  - type: web
+    name: ultra-dj-backend
+    env: docker
+    plan: free
+    dockerFilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8000
+    autoDeploy: true
+
+  # 2. The React UI (Frontend)
+  - type: web
+    name: ultra-dj-frontend
+    env: static
+    plan: free
+    buildCommand: cd client && npm install && npm run build
+    publishDir: client/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: ultra-dj-backend
+          property: url
+    autoDeploy: true

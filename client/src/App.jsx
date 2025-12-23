@@ -5,7 +5,7 @@ import { Camera, Mic, Send, Music, User, Bot, Play, Pause, X } from 'lucide-reac
 import ThreeBackground from './components/ThreeBackground';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = "http://127.0.0.1:8001";
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
 
 function App() {
   const [messages, setMessages] = useState([{ type: 'ai', text: "I am your AI DJ. Tell me your vibe or scan your face.", songs: [] }]);
