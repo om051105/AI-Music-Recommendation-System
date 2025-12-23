@@ -11,11 +11,11 @@ services:
     autoDeploy: true
 
   # 2. The React UI (Frontend)
-  - type: static
+  - type: static_site
     name: ultra-dj-frontend
     buildCommand: cd client && npm install && npm run build
-    staticPublishPath: client/dist
+    publishDir: client/dist
     envVars:
       - key: VITE_API_URL
-        value: https://ultra-dj-backend.onrender.com 
+        value: https://ultra-dj-backend.onrender.com
     autoDeploy: true
