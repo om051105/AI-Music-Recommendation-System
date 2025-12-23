@@ -10,14 +10,12 @@ services:
         value: 8000
     autoDeploy: true
 
-  # 2. The React UI (Frontend) -> Must be type: static for static sites
-  - type: web
+  # 2. The React UI (Frontend)
+  - type: static
     name: ultra-dj-frontend
-    env: static
-    plan: free
     buildCommand: cd client && npm install && npm run build
     staticPublishPath: client/dist
     envVars:
       - key: VITE_API_URL
-        value: https://ultra-dj-backend.onrender.com # NOTE: You might need to update this URL in the Render Dashboard after the backend is created if the name is different.
+        value: https://ultra-dj-backend.onrender.com 
     autoDeploy: true
