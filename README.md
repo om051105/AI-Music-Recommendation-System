@@ -63,3 +63,6 @@ This will automatically:
 | **Backend** | FastAPI, Uvicorn | The High-Performance AI Server. |
 | **AI Core** | DeepFace, Sentence-Transformers | The Brains (Vision + NLP). |
 
+
+---
+*Last Updated: 2025-12-24*
