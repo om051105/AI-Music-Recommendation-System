@@ -63,4 +63,3 @@ This will automatically:
 | **Backend** | FastAPI, Uvicorn | The High-Performance AI Server. |
 | **AI Core** | DeepFace, Sentence-Transformers | The Brains (Vision + NLP). |
 
-*Built with ❤️ by Antigravity*
