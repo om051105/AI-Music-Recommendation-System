@@ -19,8 +19,5 @@ services:
     staticPublishPath: client/dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ultra-dj-backend
-          property: url
+        value: https://ultra-dj-backend.onrender.com # NOTE: You might need to update this URL in the Render Dashboard after the backend is created if the name is different.
     autoDeploy: true
