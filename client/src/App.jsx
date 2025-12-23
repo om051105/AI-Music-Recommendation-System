@@ -1,11 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import Webcam from 'react-webcam';
 import { Camera, Mic, Send, Music, User, Bot, Play, Pause, X } from 'lucide-react';
 import ThreeBackground from './components/ThreeBackground';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8001";
 
 function App() {
   const [messages, setMessages] = useState([{ type: 'ai', text: "I am your AI DJ. Tell me your vibe or scan your face.", songs: [] }]);
@@ -16,6 +16,16 @@ function App() {
   // Camera State
   const [showCamera, setShowCamera] = useState(false);
   const webcamRef = useRef(null);
+
+  // Smart Scroll: Scroll to the top of the new message
+  useEffect(() => {
+    setTimeout(() => {
+      const lastMsg = document.getElementById("last-message");
+      if (lastMsg) {
+        lastMsg.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100); // Small delay to ensure DOM paint
+  }, [messages, loading]);
 
   const handeSend = async () => {
     if (!input.trim()) return;
@@ -164,13 +174,14 @@ function App() {
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
+                  id={i === messages.length - 1 ? "last-message" : ""}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex flex-col ${msg.type === 'user' ? 'items-end' : 'items-start'}`}
                 >
                   <div className={`p-4 rounded-2xl max-w-[80%] ${msg.type === 'user'
-                      ? 'bg-green-600 text-black font-medium'
-                      : 'bg-zinc-800 border border-zinc-700'
+                    ? 'bg-green-600 text-black font-medium'
+                    : 'bg-zinc-800 border border-zinc-700'
                     }`}>
                     {msg.text}
                   </div>
@@ -184,8 +195,7 @@ function App() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: idx * 0.05 }}
-                          className="card bg-black/60 p-4 rounded-xl border border-zinc-700 flex items-center gap-4 cursor-pointer group"
-                          onClick={() => window.open(`https://open.spotify.com/search/${song.name} ${song.artist}`, '_blank')}
+                          className="card bg-black/60 p-4 rounded-xl border border-zinc-700 flex items-center gap-4 group"
                         >
                           <img src={song.cover} alt="art" className="w-16 h-16 rounded object-cover" />
                           <div className="flex-1 min-w-0">
@@ -194,7 +204,41 @@ function App() {
                             </h4>
                             <p className="text-sm text-gray-400 truncate">{song.artist}</p>
                           </div>
-                          <Play size={20} className="text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="flex gap-2">
+                            {/* Spotify Official Logo */}
+                            <button
+                              onClick={() => window.open(song.links.spotify, '_blank')}
+                              className="p-2 transition hover:scale-110"
+                              title="Open in Spotify"
+                            >
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="#1DB954">
+                                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+                              </svg>
+                            </button>
+
+                            {/* YouTube Official Logo */}
+                            <button
+                              onClick={() => window.open(song.links.youtube, '_blank')}
+                              className="p-2 transition hover:scale-110"
+                              title="Open in YouTube"
+                            >
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="#FF0000">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                              </svg>
+                            </button>
+
+                            {/* Apple Music Official Logo */}
+                            <button
+                              onClick={() => window.open(song.links.apple, '_blank')}
+                              className="p-2 transition hover:scale-110"
+                              title="Open in Apple Music"
+                            >
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="#FA243C">
+                                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm3.899 15.928c-.563.856-1.536 1.488-2.671 1.488-2.348 0-4.25-2.584-4.25-5.772 0-3.187 1.902-5.772 4.25-5.772 1.127 0 2.096.623 2.658 1.468v-1.171c-.704-1.258-2.028-2.113-3.559-2.113-2.261 0-4.093 1.832-4.093 4.093s1.832 4.093 4.093 4.093c1.516 0 2.83-.836 3.539-2.073v1.171l.033.618z" />
+                                <path d="M14.659 8.3c-.567-.84-1.529-1.455-2.656-1.455-2.317 0-4.195 2.559-4.195 5.715 0 3.156 1.878 5.715 4.195 5.715 1.135 0 2.103-.624 2.668-1.475V8.3z" fill="#fff" />
+                              </svg>
+                            </button>
+                          </div>
                         </motion.div>
                       ))}
                     </div>
@@ -203,7 +247,6 @@ function App() {
               ))}
             </AnimatePresence>
             {loading && <div className="text-green-500 animate-pulse">Thinking...</div>}
-            <div ref={(el) => el?.scrollIntoView({ behavior: 'smooth' })} />
           </div>
 
           {/* Input Area */}

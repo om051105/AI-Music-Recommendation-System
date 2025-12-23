@@ -110,11 +110,17 @@ async def recommend(req: RecommendationRequest):
             "name": r['name'],
             "artist": r['artist'],
             "score": r.get('score', 0),
-            "cover": art_url 
+            "score": r.get('score', 0),
+            "cover": art_url,
+            "links": {
+                "spotify": f"https://open.spotify.com/search/{r['name'].replace(' ', '%20')}%20{r['artist'].replace(' ', '%20')}",
+                "youtube": f"https://www.youtube.com/results?search_query={r['name'].replace(' ', '+')}+{r['artist'].replace(' ', '+')}",
+                "apple": f"https://music.apple.com/us/search?term={r['name'].replace(' ', '+')}+{r['artist'].replace(' ', '+')}"
+            }
         })
         
     return {"tracks": formatted}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
